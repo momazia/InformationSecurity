@@ -1,0 +1,16 @@
+Attention: since ASCII code is used in this program, please make sure P*Q is more than 255 (Number of characters in extended ASCII table)
+Do you wish to auto generate P and Q? [Y/n]
+Y
+Enter a minimun number (inclusive) for P and Q:
+100
+Enter a maximum number (exclusive) for P and Q: (This is to avoid very big numbers)
+300
+P [277], Q[223], N[61771], Z[61272], E[11795], D[44867]
+Enter your message:
+Bob, I LOVE you.
+Original message:
+         B          o          b          ,                     I                     L          O          V          E                     y          o          u          . 
+Encrypted message:
+     12715      41445      45325       6470      32140       8996      32140       4534      46167      49206      33773      32140      23478      41445      53622       9218 
+Decrypted message:
+         B          o          b          ,                     I                     L          O          V          E                     y          o          u          . 
