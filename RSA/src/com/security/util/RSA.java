@@ -191,7 +191,7 @@ public class RSA {
 		return true;
 	}
 
-	public Integer[] encrypt(String string) {
+	public Integer[] encrypt(String message) {
 		return null;
 	}
 

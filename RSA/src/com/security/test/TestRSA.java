@@ -95,11 +95,33 @@ public class TestRSA {
 	}
 
 	@Test
-	public void testCalculateD() {
+	public void testCalculateD1() {
 		RSA rsa = new RSA(BigInteger.valueOf(11), BigInteger.valueOf(5));
 		rsa.setE(BigInteger.valueOf(7));
+		rsa.calculateN();
+		rsa.calculateZ();
 		rsa.calculateD();
 		assertEquals(BigInteger.valueOf(23), rsa.getD());
+	}
+
+	@Test
+	public void testCalculateD2() {
+		RSA rsa = new RSA(BigInteger.valueOf(5), BigInteger.valueOf(7));
+		rsa.setE(BigInteger.valueOf(5));
+		rsa.calculateN();
+		rsa.calculateZ();
+		rsa.calculateD();
+		assertEquals(BigInteger.valueOf(5), rsa.getD());
+	}
+
+	@Test
+	public void testEncrypt() {
+		RSA rsa = new RSA(BigInteger.valueOf(3), BigInteger.valueOf(5));
+		rsa.setE(BigInteger.valueOf(5));
+		rsa.calculateN();
+		rsa.calculateZ();
+		rsa.calculateD();
+		Integer[] encryptedMessage = rsa.encrypt("love");
 	}
 
 }
