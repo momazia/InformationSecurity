@@ -1,0 +1,16 @@
+Attention: since ASCII code is used in this program, please make sure P*Q is more than 255 (Number of characters in extended ASCII table)
+Do you wish to auto generate P and Q? [Y/n]
+n
+Enter P:
+17
+Enter Q:
+23
+P [17], Q[23], N[391], Z[352], E[295], D[247]
+Enter your message:
+Bob, I love you.
+Original message:
+         B          o          b          ,                     I                     l          o          v          e                     y          o          u          . 
+Encrypted message:
+       212        240        361        362         25        197         25         31        240        271        186         25        315        240        144         92 
+Decrypted message:
+         B          o          b          ,                     I                     l          o          v          e                     y          o          u          . 
