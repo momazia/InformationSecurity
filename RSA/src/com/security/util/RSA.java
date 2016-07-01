@@ -1,6 +1,8 @@
 package com.security.util;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -191,8 +193,64 @@ public class RSA {
 		return true;
 	}
 
-	public Integer[] encrypt(String message) {
-		return null;
+	/**
+	 * Encrypts the message given by running (m^e) % n formula on each of the characters' ASCII code.
+	 * 
+	 * @param message
+	 * @return
+	 */
+	public List<BigInteger> encrypt(String message) {
+		List<BigInteger> result = new ArrayList<>();
+		for (char chr : message.toCharArray()) {
+			BigInteger m = BigInteger.valueOf((int) chr);
+			BigInteger m_e = m.pow(e.intValue());
+			BigInteger m_e_mod_n = m_e.mod(n);
+			result.add(m_e_mod_n);
+		}
+		return result;
+	}
+
+	/**
+	 * Decrypts the given encrypted message
+	 * 
+	 * @param encryptedMessage
+	 * @return
+	 */
+	public String decrypt(List<BigInteger> encryptedMessage) {
+		// Decrypting the message
+		List<BigInteger> decryptedIntegers = getDecryptedIntegers(encryptedMessage);
+		// Convert to String
+		return convertToString(decryptedIntegers);
+	}
+
+	/**
+	 * Decrypts the message given, character by character using formula: (c^d) % n based on the ASCII key.
+	 * 
+	 * @param encryptedMessage
+	 * @return
+	 */
+	private List<BigInteger> getDecryptedIntegers(List<BigInteger> encryptedMessage) {
+		List<BigInteger> result = new ArrayList<>();
+		for (BigInteger c : encryptedMessage) {
+			BigInteger c_d = c.pow(d.intValue());
+			BigInteger c_d_mod_n = c_d.mod(n);
+			result.add(c_d_mod_n);
+		}
+		return result;
+	}
+
+	/**
+	 * Converts the list of encrypted characters to a string
+	 * 
+	 * @param encryptedIntegers
+	 * @return
+	 */
+	public String convertToString(List<BigInteger> encryptedIntegers) {
+		StringBuffer result = new StringBuffer();
+		for (BigInteger bigInteger : encryptedIntegers) {
+			result.append((char) bigInteger.intValue());
+		}
+		return result.toString();
 	}
 
 	public BigInteger getN() {

@@ -5,7 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -115,13 +117,35 @@ public class TestRSA {
 	}
 
 	@Test
-	public void testEncrypt() {
-		RSA rsa = new RSA(BigInteger.valueOf(3), BigInteger.valueOf(5));
+	public void testEncryptDecrypt() {
+		RSA rsa = new RSA(BigInteger.valueOf(13), BigInteger.valueOf(17));
 		rsa.setE(BigInteger.valueOf(5));
 		rsa.calculateN();
 		rsa.calculateZ();
 		rsa.calculateD();
-		Integer[] encryptedMessage = rsa.encrypt("love");
+		String message = "love";
+		List<BigInteger> encryptedMessage = rsa.encrypt(message);
+		String originalMessage = rsa.decrypt(encryptedMessage);
+		assertEquals(message, originalMessage);
+	}
+
+	@Test
+	public void testEncryptDecrypt_BigNumbers() {
+		RSA rsa = new RSA(40, 1000);
+		String message = "love";
+		List<BigInteger> encryptedMessage = rsa.encrypt(message);
+		String originalMessage = rsa.decrypt(encryptedMessage);
+		assertEquals(message, originalMessage);
+	}
+
+	@Test
+	public void testConvertToString() {
+		List<BigInteger> encryptedIntegers = new ArrayList<>();
+		encryptedIntegers.add(BigInteger.valueOf(108));
+		encryptedIntegers.add(BigInteger.valueOf(111));
+		encryptedIntegers.add(BigInteger.valueOf(86));
+		encryptedIntegers.add(BigInteger.valueOf(69));
+		assertEquals("loVE", new RSA().convertToString(encryptedIntegers));
 	}
 
 }
