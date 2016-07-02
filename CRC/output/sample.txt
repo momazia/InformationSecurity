@@ -1,0 +1,10 @@
+Enter your messge (Just lower case characters):
+love
+Enter the number of iterations:
+8
+Encrypted message:
+love
+Encrypted message (8 bits):
+00001100	00001111	00010110	00000101	
+Decrypted message:
+love
