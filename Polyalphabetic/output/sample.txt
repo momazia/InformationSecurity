@@ -1,0 +1,5 @@
+Enter your message Alice: 
+bob, i love you.
+Message:		bob, i love you.
+Encrypted Message:	ghg, b qhax dhz.
+Decrypted Message:	bob, i love you.
