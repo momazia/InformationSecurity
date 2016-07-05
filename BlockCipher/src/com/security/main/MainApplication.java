@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.security.util.CRCUtils;
+import com.security.util.BlockCipherUtils;
 
 /**
- * The main application which takes an input from user and runs CRC on it.
+ * The main application which takes an input from user and runs Block cipher on it.
  * 
  * @author Max
  *
@@ -24,7 +24,7 @@ public class MainApplication {
 		int numberOfIteration = Integer.valueOf(br.readLine());
 
 		// Encrypting
-		String[] encryptedBlocks = CRCUtils.getInstance().encrypt(originalMessage, numberOfIteration);
+		String[] encryptedBlocks = BlockCipherUtils.getInstance().encrypt(originalMessage, numberOfIteration);
 
 		StringBuffer encryptedBlocksBuffer = new StringBuffer();
 		for (String encryptedBlock : encryptedBlocks) {
@@ -38,7 +38,7 @@ public class MainApplication {
 		System.out.println(encryptedBlocksBuffer.toString());
 
 		// Decrypting
-		String decryptedMessage = CRCUtils.getInstance().decrypt(encryptedBlocks, numberOfIteration);
+		String decryptedMessage = BlockCipherUtils.getInstance().decrypt(encryptedBlocks, numberOfIteration);
 
 		System.out.println("Decrypted message:");
 		System.out.println(decryptedMessage);

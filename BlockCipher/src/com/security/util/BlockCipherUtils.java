@@ -1,32 +1,32 @@
 package com.security.util;
 
 /**
- * Main utility class for CRC
+ * Main utility class for Block cipher
  * 
  * @author Max
  *
  */
-public class CRCUtils {
+public class BlockCipherUtils {
 
 	private static final int ASCII_MIN = 96;
 
 	/**
 	 * static Singleton instance
 	 */
-	private static CRCUtils instance;
+	private static BlockCipherUtils instance;
 
 	/**
 	 * Private constructor for singleton
 	 */
-	private CRCUtils() {
+	private BlockCipherUtils() {
 	}
 
 	/**
 	 * Static getter method for retrieving the singleton instance
 	 */
-	public static CRCUtils getInstance() {
+	public static BlockCipherUtils getInstance() {
 		if (instance == null) {
-			instance = new CRCUtils();
+			instance = new BlockCipherUtils();
 		}
 		return instance;
 	}
