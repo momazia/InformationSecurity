@@ -1,10 +1,10 @@
 Enter your messge (Just lower case characters):
-love
+iloveyoubob
 Enter the number of iterations:
-8
+10
 Encrypted message:
-love
+iloveyoubob
 Encrypted message (8 bits):
-00001100	00001111	00010110	00000101	
+10001000	10001101	10001110	10010111	10000100	10011000	10001110	10010100	10000011	10001110	10000011	
 Decrypted message:
-love
+iloveyoubob
