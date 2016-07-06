@@ -8,6 +8,8 @@ package com.security.util;
  */
 public class BlockCipherUtils {
 
+	private static final int BLOCK_SIZE = 8;
+
 	private static final int ASCII_MIN = 96;
 
 	/**
@@ -60,36 +62,62 @@ public class BlockCipherUtils {
 	}
 
 	/**
-	 * Flips the the 8 bit blocks
+	 * Reverse the the 8 bit blocks given.
 	 * 
 	 * @param blocks
 	 * @return
 	 */
-	public String[] flip8BitBlocks(String[] blocks) {
+	public String[] reverseBits(String[] blocks) {
 		String[] result = new String[blocks.length];
 		for (int i = 0; i < blocks.length; i++) {
-			result[i] = blocks[i].replace('0', 'x').replace('1', '0').replace('x', '1');
+			result[i] = new StringBuffer(blocks[i]).reverse().toString();
+		}
+		return result;
+	}
+
+	public String[] flipLastBit(String[] blocks) {
+		String[] result = new String[blocks.length];
+		for (int i = 0; i < blocks.length; i++) {
+			result[i] = flipLastBit(blocks[i]);
 		}
 		return result;
 	}
 
 	/**
-	 * Swap the blocks two by two, if there is any left at the end (in case of odd number of blocks), it will copy over the last block over to the result.
+	 * Flips the last digit in the string.
+	 * 
+	 * @param input
+	 * @return
+	 */
+	private String flipLastBit(String input) {
+		char lastChar = input.charAt(input.length() - 1);
+		String result = input.substring(0, input.length() - 1);
+		if (lastChar == '1') {
+			return result + '0';
+		}
+		return result + '1';
+	}
+
+	/**
+	 * Swap the blocks of size 8, if there is a reminder to 8 division, it will swap them as a one chunk.
 	 * 
 	 * @param blocks
 	 * @return
 	 */
 	public String[] swapBlocks(String[] blocks) {
 		String[] result = new String[blocks.length];
-		for (int i = 0; i + 1 < blocks.length; i = i + 2) {
-			// If there is a next block
-			result[i + 1] = blocks[i];
-			result[i] = blocks[i + 1];
+		for (int i = 0; i + BLOCK_SIZE - 1 < blocks.length; i = i + BLOCK_SIZE) {
+			for (int j = 0; j < BLOCK_SIZE; j++) {
+				result[i + j] = blocks[i + BLOCK_SIZE - j - 1];
+			}
 		}
-		// If there is odd number of blocks, copy the last one as it is.
-		if (blocks.length % 2 != 0) {
-			int lastIndex = blocks.length - 1;
-			result[lastIndex] = blocks[lastIndex];
+		int mod = blocks.length % BLOCK_SIZE;
+		int div = blocks.length / BLOCK_SIZE;
+		if (mod != 0) {
+			for (int i = 0; i < mod; i++) {
+				result[div * BLOCK_SIZE + i] = blocks[div * BLOCK_SIZE + mod - i - 1];
+
+			}
 		}
 		return result;
 	}
@@ -105,8 +133,9 @@ public class BlockCipherUtils {
 		int[] intBlocks = convertStringToInt(message);
 		String[] _8BitBlocks = convertTo8BitBinaryBlocks(intBlocks);
 		for (int i = 0; i < numberOfIteration; i++) {
-			String[] flipped8BitBlocks = flip8BitBlocks(_8BitBlocks);
-			_8BitBlocks = swapBlocks(flipped8BitBlocks);
+			String[] reveresed8BitBlocks = reverseBits(_8BitBlocks);
+			String[] flippedLastBit = flipLastBit(reveresed8BitBlocks);
+			_8BitBlocks = swapBlocks(flippedLastBit);
 		}
 		return _8BitBlocks;
 	}
@@ -122,7 +151,8 @@ public class BlockCipherUtils {
 		String[] inputBlocks = encryptedBinaries;
 		for (int i = 0; i < numberOfIteration; i++) {
 			String[] swappedBlocks = swapBlocks(inputBlocks);
-			inputBlocks = flip8BitBlocks(swappedBlocks);
+			String[] flippedLastBit = flipLastBit(swappedBlocks);
+			inputBlocks = reverseBits(flippedLastBit);
 		}
 		return convert8BitBinaryBlocksToString(inputBlocks);
 	}
