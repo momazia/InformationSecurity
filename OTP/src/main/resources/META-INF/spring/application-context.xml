@@ -19,11 +19,33 @@
 
 	<import resource="/security.xml" />
 
+	<bean id="datastore" class="com.otp.service.DatastoreService">
+		<constructor-arg type="String" value="com.otp.datastore.entity" />
+	</bean>
+
+	<bean id="userService" class="com.otp.service.UserService">
+	</bean>
+
+	<bean id="userDAOImpl" class="com.otp.dao.UserDAOImpl">
+	</bean>
+
+	<bean id="mailService" class="com.otp.service.MailService">
+	</bean>
+
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<value>
+				resource.loader=class
+				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+			</value>
+		</property>
+	</bean>
+
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.mailgun.org" />
 		<property name="port" value="587" />
-		<property name="username" value="" />
-		<property name="password" value="" />
+		<property name="username" value="postmaster@mg.koogla.com" />
+		<property name="password" value="9e8321430089f9ec17ab4d22aac2f46d" />
 
 		<!-- The name of the property, following JavaBean naming conventions -->
 		<property name="javaMailProperties">

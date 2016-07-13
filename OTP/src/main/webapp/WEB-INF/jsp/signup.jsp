@@ -10,14 +10,10 @@
 </head>
 <body>
 	<div class="middle_of_page">
-		<h3><spring:message code="text.welcome" /></h3>
+		<spring:message code="text.welcome" />
 		<div class="flex_container_row index_action_btns">
-			<span class= "submit_button">
-				<a href="/login/render"><spring:message code="text.login" /></a>
-			</span> 
-			<span class= "submit_button">
-				<a href="/signup/render"><spring:message code="text.signup" /></a>
-			</span>
+			<a href="/login/render"><spring:message code="text.login" /></a> 
+			<a href="/signup/render"><spring:message code="text.signup" /></a>
 		</div>
 	</div>
 </body>

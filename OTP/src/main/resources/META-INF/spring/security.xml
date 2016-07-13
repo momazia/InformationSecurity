@@ -16,18 +16,16 @@
 		<intercept-url pattern="/secure/**" access="isAuthenticated()" />
 		<access-denied-handler error-page="/403" />
 		<form-login login-page='/login/render' login-processing-url="/validateUser" default-target-url="/" always-use-default-target="false"
-			authentication-failure-url="/login/render?error=true" username-parameter="username" password-parameter="password" />
+			authentication-failure-url="/login/render?error=true" username-parameter="email" password-parameter="password" />
 		<logout logout-url="/logout" logout-success-url="/" delete-cookies="JSESSIONID" invalidate-session="true" />
 
 	</http>
-	
-	<authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="mahdi" password="12345" authorities="ROLE_USER" />
-                <user name="juan" password="12345" authorities="ROLE_USER" />
-            </user-service>
-        </authentication-provider>
-    </authentication-manager>
+
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider ref="authenticationProvider" />
+	</authentication-manager>
+
+	<beans:bean id="authenticationProvider" class="com.otp.security.CustomAuthenticationProvider">
+	</beans:bean>
 
 </beans:beans>

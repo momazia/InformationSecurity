@@ -1,0 +1,121 @@
+html {
+	font-size: 62.5%;
+	font-family: 'Roboto', sans-serif;
+}
+
+html, body, header, footer, div, a, p, ul, li {
+	padding: 0;
+	margin: 0;
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	font-size: 1.6rem;
+}
+
+.flex_container_row, .flex_container_column, .flex_container_row_reverse
+	{
+	display: flex;
+	align-items: center;
+}
+
+.flex_container_row {
+	flex-direction: row;
+}
+
+.flex_container_column {
+	flex-direction: column;
+}
+
+.flex_container_row_reverse {
+	flex-direction: row-reverse;
+}
+
+.middle_of_page {
+	display: flex;
+	width: 600px;
+	height: 100%;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+}
+
+.index_action_btns {
+	margin-top: 50px;
+	justify-content: space-around;
+	width: 350px;
+}
+
+.form_row, .form_row_rtl, .form_row_center {
+	width: 100%;
+}
+
+.top_margin {
+	margin-top: 50px;
+}
+
+.bottom_margin {
+	margin-bottom: 15px;
+}
+
+.error {
+	color: #BD4932;
+}
+
+.input_textbox, .input_textbox_error {
+	width: inherit;
+	font-size: 1.6rem;
+	font-family: Arial, sans-serif;
+	border-radius: 5px;
+	padding: 5px 10px;
+	box-sizing: border-box;
+}
+
+.input_textbox {
+	border: 1px solid gray;
+}
+
+.input_textbox_error {
+	border: 1px solid red;
+}
+
+.submit_button, .submit_button_full_width {
+	display: inline-block;
+	border: 2px solid blue;
+	color: blue;
+	border-radius: 50px 50px 50px 50px;
+	-webkit-border-radius: 50px 50px 50px 50px;
+	-moz-border-radius: 50px 50px 50px 50px;
+	width: auto;
+	height: auto;
+	padding: 8px 40px;
+	text-align: center;
+	font-size: 14px;
+	transition: 0.3s ease;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.submit_button_full_width, .fb_button_full_width {
+	width: 100%;
+	padding: 8px 0px;
+}
+
+.fb_button_full_width {
+	border: none;
+	background-color: #3b5a9a;
+	color: white;
+	opacity: 0.4;
+}
+
+.submit_button_full_width:hover, .submit_button_full_width:active,
+	.submit_button:hover, .submit_button:active {
+	border: 2px solid blue;
+	color: blue;
+}

@@ -29,4 +29,6 @@
 	</bean>
 	<!-- Resource bundle message: End -->
 
+	<bean id="signupValidator " class="com.otp.controller.form.validator.SignupValidator"></bean>
+
 </beans>
