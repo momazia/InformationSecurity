@@ -12,7 +12,7 @@ import com.otp.datastore.entity.OneTimePassword;
  *
  */
 @Repository
-public class OTPDAOImpl extends DAOImpl {
+public class OTPDAOImpl {
 
 	/**
 	 * Saves the given currentHash for the username passed.
@@ -22,6 +22,16 @@ public class OTPDAOImpl extends DAOImpl {
 	 */
 	public void save(String currentHash, String userName) {
 		ObjectifyService.ofy().save().entity(new OneTimePassword(userName, currentHash));
+	}
+
+	/**
+	 * Gets the OneTimePassword data saved for user name passed.
+	 * 
+	 * @param userName
+	 * @return
+	 */
+	public OneTimePassword find(String userName) {
+		return ObjectifyService.ofy().load().type(OneTimePassword.class).id(userName).now();
 	}
 
 }

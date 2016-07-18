@@ -20,6 +20,10 @@ public class OneTimePassword {
 	private String userName;
 	private String currentHash;
 
+	public OneTimePassword() {
+		super();
+	}
+
 	public OneTimePassword(String userName, String currentHash) {
 		super();
 		this.userName = userName;

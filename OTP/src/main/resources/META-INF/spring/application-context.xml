@@ -17,10 +17,6 @@
 
 	<context:annotation-config/>
 
-	<bean id="datastore" class="com.otp.service.DatastoreService">
-		<constructor-arg type="String" value="com.otp.datastore.entity" />
-	</bean>
-
 	<bean id="otpService" class="com.otp.service.OTPService">
 	</bean>
 

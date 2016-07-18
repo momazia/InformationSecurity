@@ -31,16 +31,34 @@ public class OneTimePasswordController {
 	 */
 	@RequestMapping(value = "/initiate", method = RequestMethod.GET)
 	public JsonResponse<Boolean> initiate(@RequestParam(name = "currentHash") String currentHash) {
-		JsonResponse<Boolean> res = new JsonResponse<>();
+
 		otpService.initiate(currentHash);
+
+		JsonResponse<Boolean> res = new JsonResponse<>();
 		res.setData(Boolean.TRUE);
+
 		return res;
 	}
 
+	/**
+	 * Validates if the given hash is valid or not.
+	 * 
+	 * @param hash
+	 * @return
+	 */
 	@RequestMapping(value = "/verify", method = RequestMethod.GET)
-	public JsonResponse<Boolean> verify() {
+	public JsonResponse<Boolean> verify(@RequestParam(name = "hash") String hash) {
+
+		boolean isValidOtp = otpService.isValid(hash);
+
+		// If the OTP is valid, we want to update the current hash value for the
+		// user.
+		if (isValidOtp) {
+			otpService.initiate(hash);
+		}
+
 		JsonResponse<Boolean> res = new JsonResponse<>();
-		res.setData(Boolean.FALSE);
+		res.setData(isValidOtp);
 		return res;
 	}
 }
