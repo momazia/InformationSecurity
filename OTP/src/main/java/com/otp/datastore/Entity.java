@@ -15,10 +15,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Entity {
 
-    /**
-     * Kind of the entity
-     * 
-     * @return
-     */
-    Kind kind();
+	/**
+	 * Kind of the entity
+	 * 
+	 * @return
+	 */
+	Kind kind();
 }

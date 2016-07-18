@@ -12,35 +12,35 @@ import java.util.List;
  */
 public class DatastoreResult<T> {
 
-    private List<T> results;
-    private String cursor;
+	private List<T> results;
+	private String cursor;
 
-    public String getCursor() {
-	return cursor;
-    }
-
-    public void setCursor(String cursor) {
-	this.cursor = cursor;
-    }
-
-    /**
-     * Adds an element to result
-     * 
-     * @param result
-     */
-    public void addResult(T result) {
-	if (this.results == null) {
-	    this.results = new ArrayList<>();
+	public String getCursor() {
+		return cursor;
 	}
-	this.results.add(result);
-    }
 
-    public List<T> getResults() {
-	return results;
-    }
+	public void setCursor(String cursor) {
+		this.cursor = cursor;
+	}
 
-    public void setResults(List<T> results) {
-	this.results = results;
-    }
+	/**
+	 * Adds an element to result
+	 * 
+	 * @param result
+	 */
+	public void addResult(T result) {
+		if (this.results == null) {
+			this.results = new ArrayList<>();
+		}
+		this.results.add(result);
+	}
+
+	public List<T> getResults() {
+		return results;
+	}
+
+	public void setResults(List<T> results) {
+		this.results = results;
+	}
 
 }

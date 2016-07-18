@@ -15,21 +15,21 @@ import com.googlecode.objectify.Ref;
  */
 public class DAOImpl {
 
-    /**
-     * Converts the list to ref list.
-     * 
-     * @param entity
-     * @return
-     */
-    protected <T> List<Ref<T>> convert(List<T> entity) {
-	List<Ref<T>> result = null;
-	if (CollectionUtils.isNotEmpty(entity)) {
-	    result = new ArrayList<>();
-	    for (T tag : entity) {
-		result.add(Ref.create(tag));
-	    }
+	/**
+	 * Converts the list to ref list.
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	protected <T> List<Ref<T>> convert(List<T> entity) {
+		List<Ref<T>> result = null;
+		if (CollectionUtils.isNotEmpty(entity)) {
+			result = new ArrayList<>();
+			for (T tag : entity) {
+				result.add(Ref.create(tag));
+			}
+		}
+		return result;
 	}
-	return result;
-    }
 
 }

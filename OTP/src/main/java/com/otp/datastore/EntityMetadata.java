@@ -8,32 +8,32 @@ package com.otp.datastore;
  */
 public class EntityMetadata {
 
-    private String idField;
-    private Class<?> clazz;
+	private String idField;
+	private Class<?> clazz;
 
-    /**
-     * Default constructor
-     * 
-     * @param idField
-     */
-    public EntityMetadata(String idField, Class<?> clazz) {
-	this.idField = idField;
-	this.clazz = clazz;
-    }
+	/**
+	 * Default constructor
+	 * 
+	 * @param idField
+	 */
+	public EntityMetadata(String idField, Class<?> clazz) {
+		this.idField = idField;
+		this.clazz = clazz;
+	}
 
-    public String getIdField() {
-	return idField;
-    }
+	public String getIdField() {
+		return idField;
+	}
 
-    public void setIdField(String idField) {
-	this.idField = idField;
-    }
+	public void setIdField(String idField) {
+		this.idField = idField;
+	}
 
-    public Class<?> getClazz() {
-	return clazz;
-    }
+	public Class<?> getClazz() {
+		return clazz;
+	}
 
-    public void setClazz(Class<?> clazz) {
-	this.clazz = clazz;
-    }
+	public void setClazz(Class<?> clazz) {
+		this.clazz = clazz;
+	}
 }

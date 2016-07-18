@@ -7,5 +7,5 @@ package com.otp.datastore;
  *
  */
 public enum Kind {
-    USER, QUOTE
+	USER, QUOTE
 }
