@@ -29,8 +29,8 @@ public class OneTimePasswordController {
 	 * @param currentHash
 	 * @return
 	 */
-	@RequestMapping(value = "/initiate", method = RequestMethod.GET)
-	public JsonResponse<Boolean> initiate(@RequestParam(name = "currentHash") String currentHash) {
+	@RequestMapping(value = "/initialize", method = RequestMethod.GET)
+	public JsonResponse<Boolean> initialize(@RequestParam(name = "currentHash") String currentHash) {
 
 		otpService.initiate(currentHash);
 
