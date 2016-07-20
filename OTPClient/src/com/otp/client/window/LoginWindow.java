@@ -219,11 +219,30 @@ public class LoginWindow {
 		boolean success = isSuccess(response);
 		if (success) {
 			log("User [" + username + "]'s OTP is all set on the server.");
+			saveOTP(username, seed, MAX_HASH_NUM);
+			log("User [" + username + "]'s OTP data is saved locally.");
 		} else {
 			log("Something went wrong while creating OTP on the server side!");
 		}
 	}
 
+	/**
+	 * Saves the OTP information about the user locally.
+	 * 
+	 * @param username
+	 * @param seed
+	 * @param counter
+	 */
+	private void saveOTP(String username, String seed, int counter) {
+		users.put(username, new User(seed, counter));
+	}
+
+	/**
+	 * Checks the response coming from server to make sure everything is fine.
+	 * 
+	 * @param response
+	 * @return
+	 */
 	private boolean isSuccess(String response) {
 		JSONParser parser = new JSONParser();
 		try {
