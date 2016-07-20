@@ -1,6 +1,8 @@
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans     
         http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -9,31 +11,30 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd">
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
 
-	<!-- Resource bundle message: Start -->
-	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-		<property name="basename" value="classpath:/message/text" />
+	<context:annotation-config/>
+
+	<bean id="otpService" class="com.otp.service.OTPService">
 	</bean>
-	<!-- Resource bundle message: End -->
 
-	<import resource="/security.xml" />
-
-	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.mailgun.org" />
-		<property name="port" value="587" />
-		<property name="username" value="" />
-		<property name="password" value="" />
-
-		<!-- The name of the property, following JavaBean naming conventions -->
-		<property name="javaMailProperties">
-			<props>
-				<prop key="mail.transport.protocol">smtp</prop>
-				<prop key="mail.smtp.auth">true</prop>
-				<prop key="mail.smtp.starttls.enable">true</prop>
-				<prop key="mail.debug">true</prop>
-			</props>
-		</property>
+	<bean id="otpDAOImpl" class="com.otp.dao.OTPDAOImpl">
 	</bean>
+
+	<security:http auto-config='true'>
+	     <security:intercept-url pattern="/otp/**" access="isAuthenticated()"/>
+	     <security:http-basic />
+	</security:http>
+	
+	<security:authentication-manager>
+	     <security:authentication-provider>
+	         <security:user-service>
+	              <security:user name="mahdi" password="123" authorities="ROLE_USER" />
+	              <security:user name="juan" password="123" authorities="ROLE_USER" />
+	              </security:user-service>
+	     </security:authentication-provider>
+	</security:authentication-manager>
 
 </beans>
