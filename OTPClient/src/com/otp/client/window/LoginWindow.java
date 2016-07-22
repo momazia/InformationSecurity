@@ -101,37 +101,39 @@ public class LoginWindow {
 
 		txtUsername = new Text(shlOtpClient, SWT.BORDER);
 		txtUsername.setToolTipText("Username");
-		txtUsername.setBounds(248, 62, 248, 21);
+		txtUsername.setBounds(240, 62, 248, 21);
 
 		CLabel lblNewLabel_1 = new CLabel(shlOtpClient, SWT.NONE);
 		lblNewLabel_1.setAlignment(SWT.RIGHT);
-		lblNewLabel_1.setBounds(121, 62, 121, 21);
+		lblNewLabel_1.setBounds(113, 62, 121, 21);
 		lblNewLabel_1.setText("Username");
 
 		txtPassword = new Text(shlOtpClient, SWT.BORDER | SWT.PASSWORD);
 		txtPassword.setToolTipText("Password");
-		txtPassword.setBounds(248, 89, 248, 21);
+		txtPassword.setBounds(240, 89, 248, 21);
 
 		CLabel lblPassword = new CLabel(shlOtpClient, SWT.NONE);
 		lblPassword.setAlignment(SWT.RIGHT);
 		lblPassword.setText("Password");
-		lblPassword.setBounds(121, 89, 121, 21);
+		lblPassword.setBounds(113, 89, 121, 21);
 
-		txtLog = new StyledText(shlOtpClient, SWT.BORDER | SWT.READ_ONLY);
+		txtLog = new StyledText(shlOtpClient, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL);
+		txtLog.setForeground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
+		txtLog.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		txtLog.setBounds(10, 176, 614, 275);
 
 		Button btnLogin = new Button(shlOtpClient, SWT.NONE);
 		btnLogin.addSelectionListener(loginButtonListener);
-		btnLogin.setBounds(409, 145, 87, 25);
+		btnLogin.setBounds(401, 145, 87, 25);
 		btnLogin.setText("Login");
 
 		Button BtnReset = new Button(shlOtpClient, SWT.NONE);
 		BtnReset.addSelectionListener(resetButtonListener);
 		BtnReset.setText("Reset");
-		BtnReset.setBounds(248, 145, 87, 25);
+		BtnReset.setBounds(240, 145, 87, 25);
 
 		comboServerAdd = new Combo(shlOtpClient, SWT.NONE);
-		comboServerAdd.setBounds(248, 116, 248, 23);
+		comboServerAdd.setBounds(240, 116, 248, 23);
 		comboServerAdd.add("http://localhost:8888");
 		comboServerAdd.add("http://is-191t-otp.appspot.com");
 		comboServerAdd.select(0);
@@ -139,7 +141,7 @@ public class LoginWindow {
 		CLabel lblServerAddress = new CLabel(shlOtpClient, SWT.NONE);
 		lblServerAddress.setText("Server Address");
 		lblServerAddress.setAlignment(SWT.RIGHT);
-		lblServerAddress.setBounds(121, 116, 121, 21);
+		lblServerAddress.setBounds(113, 116, 121, 21);
 	}
 
 	/**
@@ -152,6 +154,7 @@ public class LoginWindow {
 			txtPassword.setText("");
 			txtUsername.setText("");
 			txtLog.setText("");
+			users = new HashMap<>();
 		}
 	};
 
@@ -161,18 +164,24 @@ public class LoginWindow {
 	private SelectionAdapter loginButtonListener = new SelectionAdapter() {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
+			log("---------------------------------------------------------------");
 			// Getting the username and password
 			String username = txtUsername.getText();
 			String password = txtPassword.getText();
 			String serverAddress = comboServerAdd.getText();
 
 			boolean userLoggedInBefore = isUserLoggedInBefore(username);
-
-			if (userLoggedInBefore) {
-				log("User [" + username + "] has logged in before");
-			} else {
-				log("It is the first time user [" + username + "] is logging in");
-				registerUser(username, password, serverAddress);
+			try {
+				if (userLoggedInBefore) {
+					log("User [" + username + "] has logged in before on this application. Trying to login and verify OTP...");
+					login(username, password, serverAddress);
+				} else {
+					log("It is the first time user [" + username + "] is logging in");
+					registerUser(username, password, serverAddress);
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				log(e1.getMessage());
 			}
 		}
 
@@ -185,8 +194,10 @@ public class LoginWindow {
 	 * @param username
 	 * @param password
 	 * @param serverAddress
+	 * @throws NoSuchAlgorithmException
+	 * @throws IllegalArgumentException
 	 */
-	private void registerUser(String username, String password, String serverAddress) {
+	private void registerUser(String username, String password, String serverAddress) throws IllegalArgumentException, NoSuchAlgorithmException {
 		log("Registering user [" + username + "]...");
 
 		// Generating a new random seed
@@ -194,11 +205,7 @@ public class LoginWindow {
 		log("Seed [" + seed + "] is created for the user [" + username + "]");
 
 		// Calling the server to initialize the OTP
-		try {
-			initializeOTP(username, password, serverAddress, seed);
-		} catch (Exception e) {
-			log(e.getMessage());
-		}
+		initializeOTP(username, password, serverAddress, seed);
 	}
 
 	/**
@@ -219,11 +226,83 @@ public class LoginWindow {
 		boolean success = isSuccess(response);
 		if (success) {
 			log("User [" + username + "]'s OTP is all set on the server.");
+			saveOTP(username, seed, MAX_HASH_NUM - 1);
+			log("User [" + username + "]'s OTP data is saved locally.");
 		} else {
 			log("Something went wrong while creating OTP on the server side!");
 		}
 	}
 
+	/**
+	 * Logs the user in while it consumes an OTP.
+	 * 
+	 * @param username
+	 * @param password
+	 * @param serverAddress
+	 * @throws NoSuchAlgorithmException
+	 */
+	private void login(String username, String password, String serverAddress) throws NoSuchAlgorithmException {
+		// Getting the user's info
+		User user = users.get(username);
+		// Hashing the user's seed
+		String hashed = hash(user.getSeed(), user.getCounter());
+
+		// Calling the server
+		log("Calling server [" + serverAddress + "], to verify OTP [" + hashed + "]...");
+		String response = get(username, password, serverAddress + "/otp/verify", Arrays.asList(new BasicNameValuePair[] { new BasicNameValuePair("hash", hashed) }));
+		boolean success = isSuccess(response);
+
+		if (success) {
+			log("User [" + username + "]'s OTP is accepted by the server.");
+			// Updating the user's counter
+			updateUser(username, password, serverAddress, user);
+		} else {
+			log("OTP passed was wrong!");
+		}
+	}
+
+	/**
+	 * Update's user's OTP counter by reducing 1. If the counter is zero, it
+	 * will re-initialize the user by registering a new set of OTPs.
+	 * 
+	 * @param username
+	 * @param password
+	 * @param serverAddress
+	 * @param user
+	 * @throws NoSuchAlgorithmException
+	 * @throws IllegalArgumentException
+	 */
+	private void updateUser(String username, String password, String serverAddress, User user) throws IllegalArgumentException, NoSuchAlgorithmException {
+
+		if (user.getCounter() > 1) {
+			user.setCounter(user.getCounter() - 1);
+			users.put(username, user);
+			log("Reduced the counter value for user [" + username + "] locally by one");
+		} else {
+			log("All user [" + username + "]s' OTPs are consumed, re-initializing the user's OTP ...");
+			users.remove(username);
+			registerUser(username, password, serverAddress);
+		}
+
+	}
+
+	/**
+	 * Saves the OTP information about the user locally.
+	 * 
+	 * @param username
+	 * @param seed
+	 * @param counter
+	 */
+	private void saveOTP(String username, String seed, int counter) {
+		users.put(username, new User(seed, counter));
+	}
+
+	/**
+	 * Checks the response coming from server to make sure everything is fine.
+	 * 
+	 * @param response
+	 * @return
+	 */
 	private boolean isSuccess(String response) {
 		JSONParser parser = new JSONParser();
 		try {
@@ -323,5 +402,6 @@ public class LoginWindow {
 	 */
 	private void log(String log) {
 		txtLog.append(log + "\n");
+		txtLog.setTopIndex(txtLog.getLineCount() - 1);
 	}
 }
