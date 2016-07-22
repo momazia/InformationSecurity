@@ -36,8 +36,8 @@ public class TestACL {
 	public void test_createUsers() {
 		List<String> users = new ACL().createUsers(4);
 		assertEquals(4, users.size());
-		assertEquals("User1", users.get(0));
-		assertEquals("User4", users.get(3));
+		assertEquals("user1", users.get(0));
+		assertEquals("user4", users.get(3));
 	}
 
 }

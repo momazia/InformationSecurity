@@ -18,6 +18,7 @@ import com.security.model.AccessControl;
 public class ACL {
 
 	private List<AccessControl> accessControls;
+	private List<String> users;
 
 	/**
 	 * The main constructor to use for initializing the values.
@@ -28,6 +29,7 @@ public class ACL {
 	public ACL(int numOfUsers, String folderName) {
 		// Construct n number of users
 		List<String> users = createUsers(numOfUsers);
+		this.users = users;
 
 		// Reading all the existing files in the folderName
 		List<String> fileNames = getFiles(folderName);
@@ -86,7 +88,7 @@ public class ACL {
 	 * @return
 	 */
 	private int createRandomRight() {
-		return 1 + new Random().nextInt(6);
+		return 1 + new Random().nextInt(7);
 	}
 
 	/**
@@ -113,7 +115,7 @@ public class ACL {
 
 	/**
 	 * Creates n number of users based on the parameter passed using the
-	 * following format: User1, User2 ...
+	 * following format: user1, user2 ...
 	 * 
 	 * @param numOfUsers
 	 * @return
@@ -121,7 +123,7 @@ public class ACL {
 	public List<String> createUsers(int numOfUsers) {
 		List<String> result = new ArrayList<>();
 		for (int i = 0; i < numOfUsers; i++) {
-			result.add("User" + (i + 1));
+			result.add("user" + (i + 1));
 		}
 		return result;
 	}
@@ -132,6 +134,14 @@ public class ACL {
 
 	public void setAccessControls(List<AccessControl> accessControls) {
 		this.accessControls = accessControls;
+	}
+
+	public List<String> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<String> users) {
+		this.users = users;
 	}
 
 }
